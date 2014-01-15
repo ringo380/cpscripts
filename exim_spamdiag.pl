@@ -24,11 +24,13 @@ $Term::ANSIColor::AUTORESET = 1;
 
 # GLOBALS
 
-my $os			= Cpanel::Sys::OS::getos();
+my $os              = Cpanel::Sys::OS::getos();
 my $cpanel_version	= get_cpanel_version();
 my $hostname		= hostname();
+my $tmp_dir         = "/root";
 my @exim_version_output;# exim -bV
 my @exim_queue_count; 	# exim -bpc
+my @exim_bp;            # exim -bp
 
 
 my %opt = 	(
@@ -61,6 +63,10 @@ if ( -x '/usr/sbin/exim' ) {
 
 print_exim_info();
 print_queue_count();
+
+sub run_eximbp () {
+    
+}
 
 
 # Color and print type handling
