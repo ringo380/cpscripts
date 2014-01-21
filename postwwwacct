@@ -2,20 +2,21 @@
 
 print "Executing post-create script.. \n";
 
+# Grab wwwacct arguments:
 my %OPTS = @ARGV;
 
+# Setup array containing plans/packages that should have jailshell enabled:
 my %plans = (
 				"shelltest",
 				"shelltest2",
 				"shelltest3"
-			); # Array containing plans/packages that should have jailshell enabled.
+			);
 
+# Grab the user/plan being used:			 
 my $user = $OPTS{'user'};
 my $plan = $OPTS{'plan'};
 
-print "Username: " . $user . "\n";
-print "Plan: " . $plan . "\n";
-
+# Loop through the plans configured above to determine if this package should have jailshell enabled:
 for ( %plans ) {
 	if ( $plan eq $_ )  {
 		print "Jailshell Package Detected.. \n";
