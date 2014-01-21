@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# Learning/playing with perl, most of this taken or derived from SSP
+# Learning/playing with perl, much of this taken or derived from SSP
 
 use strict;
 use warnings;
