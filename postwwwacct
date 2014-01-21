@@ -1,6 +1,6 @@
 #!/usr/local/cpanel/3rdparty/bin/perl
 
-print "Checking for username and package... \n";
+print "Executing post-create script.. \n";
 
 my %OPTS = @ARGV;
 
@@ -8,7 +8,7 @@ my %plans = (
 				"shelltest",
 				"shelltest2",
 				"shelltest3"
-			);
+			); # Array containing plans/packages that should have jailshell enabled.
 
 my $user = $OPTS{'user'};
 my $plan = $OPTS{'plan'};
