@@ -16,6 +16,8 @@ if (-e $base_path)  {
 			or die "Could not open $base_path: $!";
 			<$fh>;
 	};
+	
+	print join( ", ", @plans);
 }
 
 # Setup array containing plans/packages that should have jailshell enabled:
@@ -34,7 +36,7 @@ if (@plans){
 	for ( @plans ) {
 		if ( $plan eq $_ )  {
 			print "Jailshell Package Detected.. \n";
-			exec "chsh -s /usr/local/cpanel/bin/jailshell $user" or print STDERR "Couldn't change shell: $!";
+			exec "chsh -s /usr/local/cpanel/bin/jailplans $user" or print STDERR "Couldn't change shell: $!";
 			last;
 		}
 	}
