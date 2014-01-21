@@ -29,16 +29,10 @@ if (-e $base_path)  {
 my $user = $OPTS{'user'};
 my $plan = $OPTS{'plan'};
 
-print $plans[0];
-
 # Loop through the plans configured above to determine if this package should have jailshell enabled:i
 if (@plans){
-	print "plans array exists";
 	for ( @plans ) {
-		print "looping through $_ \n";
-		print ref($_) . "\n";
-		print ref($plan) . "\n";
-		if ( $plan eq $_ )  {
+		if ( $plan == $_ )  {
 			print "Jailshell Package Detected.. \n";
 			exec "chsh -s /usr/local/cpanel/bin/jailshell $user" or print STDERR "Couldn't change shell: $!";
 			last;
