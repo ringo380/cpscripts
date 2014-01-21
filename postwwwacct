@@ -29,8 +29,11 @@ if (-e $base_path)  {
 my $user = $OPTS{'user'};
 my $plan = $OPTS{'plan'};
 
+print $plans[0];
+
 # Loop through the plans configured above to determine if this package should have jailshell enabled:i
 if (@plans){
+	print "plans array exists";
 	for ( @plans ) {
 		if ( $plan eq $_ )  {
 			print "Jailshell Package Detected.. \n";
