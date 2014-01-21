@@ -32,7 +32,7 @@ my $os              = Cpanel::Sys::OS::getos();
 my $cpanel_version	= get_cpanel_version();
 my $hostname		= hostname();
 my $tmp_dir         = "/root";
-my @exim_restart_count;
+my $exim_restart_count = `grep -c "daemon started" /var/log/exim_mainlog`;
 
 my @exim_version_output;# exim -bV
 my @exim_queue_count; 	# exim -bpc
@@ -64,7 +64,7 @@ my @lsof_25 = split /\n/, timed_run( 'lsof', '-n', '-i', 'tcp:25' );
 if ( -x '/usr/sbin/exim' ) {
 	@exim_version_output 	= split /\n/, timed_run( '/usr/sbin/exim', '-bV');
 	@exim_queue_count 		= split /\n/, timed_run( '/usr/sbin/exim', '-bpc');
-	@exim_restart_count 	= split /\n/, timed_run( '/bin/grep', '-c', '"daemon started"', '/var/log/exim_mainlog');
+	# @exim_restart_count 	= split /\n/, timed_run( '/bin/grep', '-c', '"daemon started"', '/var/log/exim_mainlog');
 }
 
 # print @exim_version_output;
@@ -290,8 +290,8 @@ sub print_queue_count {
 sub print_restart_count {
 	print_info('Recent Restarts: ');
 	
-	if ( @exim_restart_count ) {
-		print_normal($exim_restart_count[0]);
+	if ( $exim_restart_count ) {
+		print_normal($exim_restart_count);
 	}
 }
 
