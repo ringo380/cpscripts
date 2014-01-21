@@ -1,0 +1,19 @@
+#!/usr/local/cpanel/3rdparty/bin/perl
+
+print "Checking for username and package... \n";
+
+my %OPTS = @ARGV;
+
+my $user = $OPTS{'user'};
+my $plan = $OPTS{'plan'};
+
+print "Username: " . $user . "\n";
+print "Plan: " . $plan . "\n";
+
+if ( $plan == "shelltest" ) {
+	print "Jailshell Package Detected.. \n";
+	print "Enabling Jailshell on $user... \n";
+	exec "chsh -s /usr/local/cpanel/bin/jailshell $user" or print STDERR "Couldn't change shell: $!";
+} else {
+	print "No jailshell detected.. no changes made.";
+}
