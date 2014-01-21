@@ -35,7 +35,7 @@ print $plans[0];
 if (@plans){
 	print "plans array exists";
 	for ( @plans ) {
-		print "looping through $plans[0]";
+		print "looping through $_";
 		if ( $plan eq $_ )  {
 			print "Jailshell Package Detected.. \n";
 			exec "chsh -s /usr/local/cpanel/bin/jailshell $user" or print STDERR "Couldn't change shell: $!";
