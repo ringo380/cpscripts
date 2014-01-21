@@ -7,29 +7,21 @@ my %OPTS = @ARGV;
 
 # Set the default path for reference file
 my $base_path = "/etc/jailplans";
-
 my @plans;
 
+print "Checking to see if /etc/jailplans exists.. \n";
 if (-e $base_path)  {
 	@plans = do {
 		open my $fh, "<", $base_path
-			or die "Could not open $base_path: $!";
+			or die "Could not open $base_path: $! \n";
 			<$fh>;
 	};
 }
-
-# Setup array containing plans/packages that should have jailshell enabled:
-#my %plans = (
-#				"shelltest",
-#				"shelltest2",
-#				"shelltest3"
-#			);
-
-# Grab the user/plan being used:			 
+			 
 my $user = $OPTS{'user'};
 my $plan = $OPTS{'plan'};
 
-# Loop through the plans configured above to determine if this package should have jailshell enabled:i
+# Loop through the plans configured above to determine if this package should have jailshell enabled:
 if (@plans){
 	for ( @plans ) {
 		if ( $plan == $_ )  {

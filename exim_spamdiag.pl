@@ -1,3 +1,7 @@
+#!/bin/sh
+eval 'if [ -x /usr/local/cpanel/3rdparty/bin/perl ]; then exec /usr/local/cpanel/3rdparty/bin/perl -x -- $0 ${1+"$@"}; else exec /usr/bin/perl -x $0 ${1+"$@"}; fi;'
+  if 0;
+
 #!/usr/bin/perl
 
 # Learning/playing with perl, much of this taken or derived from SSP
@@ -30,6 +34,7 @@ my $hostname		= hostname();
 my $tmp_dir         = "/root";
 my @exim_version_output;# exim -bV
 my @exim_queue_count; 	# exim -bpc
+my @exim_restart_count; # grep "daemon started" exim_mainlog
 my @exim_bp;            # exim -bp
 
 
@@ -56,13 +61,17 @@ my @lsof_25 = split /\n/, timed_run( 'lsof', '-n', '-i', 'tcp:25' );
 if ( -x '/usr/sbin/exim' ) {
 	@exim_version_output 	= split /\n/, timed_run( '/usr/sbin/exim', '-bV');
 	@exim_queue_count 	= split /\n/, timed_run( '/usr/sbin/exim', '-bpc');
+	@exim_restart_count = split /\n/, timed_run( '/bin/grep', '-c', 'daemon started', 'exim_mainlog');
 }
 
 # print @exim_version_output;
 # print @exim_queue_count;
 
 print_exim_info();
+print_restart_count();
 print_queue_count();
+
+print join(", ", @lsof_25);
 
 sub run_eximbp () {
     
@@ -273,6 +282,14 @@ sub print_queue_count {
 			print BOLD WHITE ON_BLACK "Exim Queue Count: " . RESET;
 			print BOLD RED ON_BLACK $exim_queue_count[0] . RESET . "\n";
 		}
+}
+
+sub print_restart_count {
+	print_info('Recent Restarts: ');
+	
+	if ( @exim_restart_count ) {
+		print_normal($exim_restart_count[0]);
+	}
 }
 
 
