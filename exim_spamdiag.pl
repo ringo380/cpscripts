@@ -64,7 +64,7 @@ my @lsof_25 = split /\n/, timed_run( 'lsof', '-n', '-i', 'tcp:25' );
 if ( -x '/usr/sbin/exim' ) {
 	@exim_version_output 	= split /\n/, timed_run( '/usr/sbin/exim', '-bV');
 	@exim_queue_count 		= split /\n/, timed_run( '/usr/sbin/exim', '-bpc');
-	$exim_restart_count 	= split /\n/, timed_run( '/bin/grep', '-c', 'daemon\ started', '/var/log/exim_mainlog');
+	$exim_restart_count 	= split /\n/, timed_run( '/bin/grep', '-c', '"daemon started"', '/var/log/exim_mainlog');
 }
 
 # print @exim_version_output;
