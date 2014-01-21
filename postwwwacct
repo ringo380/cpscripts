@@ -5,12 +5,30 @@ print "Executing post-create script.. \n";
 # Grab wwwacct arguments:
 my %OPTS = @ARGV;
 
+# Set the default path for reference file
+my $base_path = "/etc/jailplans";
+
+my %plans;
+
+if ( -ne $base_path ) {
+	print "The /etc/jailplans file could not be found. \n";
+	print "Enter plan name manually? ";
+	$plans[0] = <STDIN>;
+	chomp %plans;
+} else {
+	%plans = do {
+		open my $fh, "<", $base_path
+			or die "Could not open $base_path: $!";
+			<$fh>;
+	};
+}
+
 # Setup array containing plans/packages that should have jailshell enabled:
-my %plans = (
-				"shelltest",
-				"shelltest2",
-				"shelltest3"
-			);
+#my %plans = (
+#				"shelltest",
+#				"shelltest2",
+#				"shelltest3"
+#			);
 
 # Grab the user/plan being used:			 
 my $user = $OPTS{'user'};
