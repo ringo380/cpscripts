@@ -1,0 +1,67 @@
+#!/usr/local/cpanel/3rdparty/bin/perl
+
+print "Executing post-create script.. \n";
+
+# Grab wwwacct arguments
+my %OPTS = @ARGV;
+
+my $user = $OPTS{'user'};
+my $domain = $OPTS{'domain'};
+my $email = $OPTS{'contactemail'};
+my $owner = $OPTS{'owner'};
+
+# This should be able to determine the IP address locally without NS specification at this point in the creation process
+my $thisip = `dig $domain A +short`;
+	if ( $thisip == -1 )
+	{
+  		print "dig command failed: $!\n";
+	} else {
+  		printf "The result is: " . $thisip;
+	}
+
+# Kills the newline that is created by the dig
+my $ip = ( split /\n/, $thisip )[0];
+
+# Setting appropriate paths to populate the YAML file
+my $userdata_path = "/var/cpanel/userdata/$user";
+my $homedir = "/home/$user";
+my $docroot = "$homedir/public_html";
+
+# Shared SSL File Paths - THESE WILL NEED TO BE DEFINED FOR THIS TO WORK
+my $ca_path = ' '; 
+my $crt_path = ' ';
+my $key_path = ' ';
+
+# Fleshing out the YAML via a Heredoc
+$vhost = <<"EOF"; 
+documentroot: $docroot
+group: $user
+hascgi: 1
+homedir: $docroot
+ip: $ip
+ipv6: ~
+no_cache_update: 0
+owner: $owner 
+phpopenbasedirprotect: 1
+port: 443
+serveradmin: $email
+serveralias: www.$domain
+servername: $domain
+ssl: 1
+sslcacertificatefile: $ca_path
+sslcertificatefile: $crt_path
+sslcertificatekeyfile: $key_path
+usecanonicalname: 'Off'
+user: $user
+userdirprotect: ''
+EOF
+
+$file = "$userdata_path/$domain\_SSL";
+
+print "Creating $file ... \n";
+open my $fh, '>', $file or die "Can't open $file - $!\n";
+print $fh $vhost;
+
+system("/usr/local/cpanel/3rdparty/bin/perl", "/scripts/rebuildhttpdconf");
+sleep(5);
+system("/usr/local/cpanel/3rdparty/bin/perl", "/scripts/restartsrv_httpd");
