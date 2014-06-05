@@ -96,7 +96,7 @@ old_IFS="$IFS"
 IFS=";"
 for ibdata in $innodb_data_file_path
 do
-	ibdata_file=`echo $ibdata| awk -F: '{print $1}'`
+	ibdata_file=`echo $ibdata| awk -F: '{print $1}'`.recovery
 	"$top_dir"/bin/page_parser -f "$datadir/$ibdata_file"
 	mv pages-* "pages-$ibdata_file"
 done
@@ -116,7 +116,7 @@ old_IFS="$IFS"
 IFS=";"
 for ibdata in $innodb_data_file_path
 do
-	ibdata_file=`echo $ibdata| awk -F: '{print $1}'`
+	ibdata_file=`echo $ibdata| awk -F: '{print $1}'`.recovery
 	dir="pages-$ibdata_file"/FIL_PAGE_INDEX/0-1
 	mkdir -p "dumps/${mysql_db}_recovered"
 	if test -d "$dir"
@@ -183,7 +183,7 @@ do
 		IFS=";"
 		for ibdata in $innodb_data_file_path
 		do
-			ibdata_file=`echo $ibdata| awk -F: '{print $1}'`
+			ibdata_file=`echo $ibdata| awk -F: '{print $1}'`.recovery
 			dir="pages-$ibdata_file"/FIL_PAGE_INDEX/0-$index_id
 			if test -d "$dir"
 			then
