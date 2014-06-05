@@ -1,5 +1,6 @@
 #!/bin/bash
 # Script should be run with the database name as the single argument
+# Derived from test.sh on Percona's InnoDB Recovery Toolkit Launchpad
 
 set -e
 mysql_user="root"
